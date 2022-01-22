@@ -26,7 +26,6 @@ function characterHitChecker(){
             for(let i = 0; i < 6; i++){
                 if(targetCharacter === characters[i]){
                     isTargetHit[i] = true
-                    skillSounds()
                     break
                 }
             }
@@ -113,19 +112,19 @@ function dashToTarget(){
         ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
         if(characterPosY !== characterHitPosY || characterPosX !== characterHitPosX + gridLength){
             if(characterPosX !== characterHitPosX + gridLength){
-                characterPosX -= 10
+                characterPosX -= 15
                 if(characterPosX < characterHitPosX + gridLength){
                     characterPosX = characterHitPosX + gridLength
                 }
             }
             if(characterPosY !== characterHitPosY){
                 if(characterPosY > characterHitPosY){
-                    characterPosY -= 4
+                    characterPosY -= 6
                     if(characterPosY < characterHitPosY){
                         characterPosY = characterHitPosY
                     }
                 } else if(characterPosY < characterHitPosY){
-                    characterPosY += 4
+                    characterPosY += 6
                     if(characterPosY > characterHitPosY){
                         characterPosY = characterHitPosY
                     }
@@ -138,25 +137,26 @@ function dashToTarget(){
             ctx.drawImage(attackingCharacterSkillSpritesheet, 0, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
             requestAnimationFrame(dashToTarget)
         } else {
+            skillSounds()
             attackingCharacterSkill()
         }
     } else {
         ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
         if(characterPosY !== characterHitPosY || characterPosX !== characterHitPosX - gridLength){
             if(characterPosX !== characterHitPosX - gridLength){
-                characterPosX += 10
+                characterPosX += 15
                 if(characterPosX > characterHitPosX - gridLength){
                     characterPosX = characterHitPosX - gridLength
                 }
             }
             if(characterPosY !== characterHitPosY){
                 if(characterPosY > characterHitPosY){
-                    characterPosY -= 4
+                    characterPosY -= 6
                     if(characterPosY < characterHitPosY){
                         characterPosY = characterHitPosY
                     }
                 } else if(characterPosY < characterHitPosY){
-                    characterPosY += 4
+                    characterPosY += 6
                     if(characterPosY > characterHitPosY){
                         characterPosY = characterHitPosY
                     }
@@ -169,6 +169,7 @@ function dashToTarget(){
             ctx.drawImage(attackingCharacterSkillSpritesheet, 0, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
             requestAnimationFrame(dashToTarget)
         } else {
+            skillSounds()
             attackingCharacterSkill()
         }
     }
