@@ -29,10 +29,11 @@ function characterHitChecker(){
                     break
                 }
             }
+            dashToTarget()
         } else {
             enhanceSound.play()
+            attackingCharacterSkill()
         }
-        dashToTarget()
     }, 1000);
 }
 
@@ -180,7 +181,7 @@ let freezeCounter = 0
 function attackingCharacterSkill(){
     if (attackingCharacter[currentSkill]["type"] === "Attack") {
         if(gameFrameAttackingCharacter !== (attackingCharacter[currentSkill]["frameCount"] * animationSpeed)){
-        ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
+            ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
             ctx.drawImage(attackingCharacterSkillSpritesheet, frameAttackingCharacter * spriteWidth, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
             if (gameFrameAttackingCharacter % animationSpeed === 0) {
                 if (frameAttackingCharacter < attackingCharacter[currentSkill]["frameCount"]) {
@@ -198,6 +199,7 @@ function attackingCharacterSkill(){
             }
             requestAnimationFrame(attackingCharacterSkill)
         } else {
+            ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
             ctx.drawImage(attackingCharacterSkillSpritesheet, spriteWidth * attackingCharacter[currentSkill].frameCount, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
             if(attackingCharacter !== player1){
                 ctx.drawImage(player1IdleSpritesheet, framePlayer1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength * 3, gridLength * 2.5, gridLength, gridLength)
