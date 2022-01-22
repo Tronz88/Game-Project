@@ -90,7 +90,10 @@ function checkAccuracy(){
                 break
             }
         }
-    }, 1000);
+        cancelAnimationFrame(skillLoop)
+        freezeCounter = 0
+        ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
+    }, 850);
 }
     
 function damageCalculation(){
