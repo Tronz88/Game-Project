@@ -33,7 +33,7 @@ function characterHitChecker(){
         } else {
             enhanceSound.play()
         }
-        attackingCharacterSkill()
+        dashToTarget()
     }, 1000);
 }
 
@@ -108,7 +108,7 @@ function player3Idle(){
         player3IdleLoop = requestAnimationFrame(player3Idle)
     }
 }
-function dashToEnemy(){
+function dashToTarget(){
     if(attackingCharacter === player1 || attackingCharacter === player2 || attackingCharacter === player3){
         ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
         if(characterPosY !== characterHitPosY || characterPosX !== characterHitPosX + gridLength){
@@ -136,7 +136,7 @@ function dashToEnemy(){
             }
             ctx.drawImage(enemy1IdleSpritesheet, frameEnemy1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength, gridLength * 2.5, gridLength, gridLength)
             ctx.drawImage(attackingCharacterSkillSpritesheet, 0, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
-            requestAnimationFrame(dashToEnemy)
+            requestAnimationFrame(dashToTarget)
         } else {
             attackingCharacterSkill()
         }
@@ -167,7 +167,7 @@ function dashToEnemy(){
             }
             ctx.drawImage(player1IdleSpritesheet, framePlayer1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength * 3, gridLength * 2.5, gridLength, gridLength)
             ctx.drawImage(attackingCharacterSkillSpritesheet, 0, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
-            requestAnimationFrame(dashToEnemy)
+            requestAnimationFrame(dashToTarget)
         } else {
             attackingCharacterSkill()
         }
