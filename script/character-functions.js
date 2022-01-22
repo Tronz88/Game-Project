@@ -108,8 +108,73 @@ function player3Idle(){
         player3IdleLoop = requestAnimationFrame(player3Idle)
     }
 }
-
+function dashToEnemy(){
+    if(attackingCharacter === player1 || attackingCharacter === player2 || attackingCharacter === player3){
+        ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
+        if(characterPosY !== characterHitPosY || characterPosX !== characterHitPosX + gridLength){
+            if(characterPosX !== characterHitPosX + gridLength){
+                characterPosX -= 10
+                if(characterPosX < characterHitPosX + gridLength){
+                    characterPosX = characterHitPosX + gridLength
+                }
+            }
+            if(characterPosY !== characterHitPosY){
+                if(characterPosY > characterHitPosY){
+                    characterPosY -= 4
+                    if(characterPosY < characterHitPosY){
+                        characterPosY = characterHitPosY
+                    }
+                } else if(characterPosY < characterHitPosY){
+                    characterPosY += 4
+                    if(characterPosY > characterHitPosY){
+                        characterPosY = characterHitPosY
+                    }
+                }
+            }
+            if(attackingCharacter !== player1){
+                ctx.drawImage(player1IdleSpritesheet, framePlayer1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength * 3, gridLength * 2.5, gridLength, gridLength)    
+            }
+            ctx.drawImage(enemy1IdleSpritesheet, frameEnemy1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength, gridLength * 2.5, gridLength, gridLength)
+            ctx.drawImage(attackingCharacterSkillSpritesheet, 0, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
+            requestAnimationFrame(dashToEnemy)
+        } else {
+            attackingCharacterSkill()
+        }
+    } else {
+        ctx.clearRect(characterPosX, characterPosY, gridLength, gridLength)
+        if(characterPosY !== characterHitPosY || characterPosX !== characterHitPosX - gridLength){
+            if(characterPosX !== characterHitPosX - gridLength){
+                characterPosX += 10
+                if(characterPosX > characterHitPosX - gridLength){
+                    characterPosX = characterHitPosX - gridLength
+                }
+            }
+            if(characterPosY !== characterHitPosY){
+                if(characterPosY > characterHitPosY){
+                    characterPosY -= 4
+                    if(characterPosY < characterHitPosY){
+                        characterPosY = characterHitPosY
+                    }
+                } else if(characterPosY < characterHitPosY){
+                    characterPosY += 4
+                    if(characterPosY > characterHitPosY){
+                        characterPosY = characterHitPosY
+                    }
+                }
+            }
+            if(attackingCharacter !== enemy1){
+                ctx.drawImage(enemy1IdleSpritesheet, frameEnemy1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength, gridLength * 2.5, gridLength, gridLength)    
+            }
+            ctx.drawImage(player1IdleSpritesheet, framePlayer1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength * 3, gridLength * 2.5, gridLength, gridLength)
+            ctx.drawImage(attackingCharacterSkillSpritesheet, 0, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
+            requestAnimationFrame(dashToEnemy)
+        } else {
+            attackingCharacterSkill()
+        }
+    }
+}
 let idleFunctions = [player1Idle, player2Idle, player3Idle, enemy1Idle, enemy2Idle, enemy3Idle]
+let freezeCounter = 0
 
 function attackingCharacterSkill(){
     if (attackingCharacter[currentSkill]["type"] === "Attack") {
@@ -124,9 +189,26 @@ function attackingCharacterSkill(){
                 }
             }
             gameFrameAttackingCharacter++
+            if(attackingCharacter !== player1){
+                ctx.drawImage(player1IdleSpritesheet, framePlayer1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength * 3, gridLength * 2.5, gridLength, gridLength)
+            }
+            if(attackingCharacter !== enemy1){
+                ctx.drawImage(enemy1IdleSpritesheet, frameEnemy1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength, gridLength * 2.5, gridLength, gridLength)
+            }
             requestAnimationFrame(attackingCharacterSkill)
         } else {
-            checkAccuracy()
+            ctx.drawImage(attackingCharacterSkillSpritesheet, spriteWidth * attackingCharacter[currentSkill].frameCount, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
+            if(attackingCharacter !== player1){
+                ctx.drawImage(player1IdleSpritesheet, framePlayer1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength * 3, gridLength * 2.5, gridLength, gridLength)
+            }
+            if(attackingCharacter !== enemy1){
+                ctx.drawImage(enemy1IdleSpritesheet, frameEnemy1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength, gridLength * 2.5, gridLength, gridLength)
+            }
+            skillLoop = requestAnimationFrame(attackingCharacterSkill)
+            if(freezeCounter === 0){
+                checkAccuracy()
+            }
+            freezeCounter++
         }
     } else if(attackingCharacter[currentSkill]["type"] === "Enhancer"){
         if(gameFrameAttackingCharacter !== (13 * animationSpeed) - 4 ){
@@ -381,6 +463,17 @@ function targetCharacterHit(){
             }
         }
         gameFrameTargetCharacter++
+        ctx.drawImage(attackingCharacterSkillSpritesheet, spriteWidth * attackingCharacter[currentSkill].frameCount, 0, spriteWidth, spriteHeight, characterPosX, characterPosY, gridLength, gridLength)
+        if(attackingCharacter !== player1){
+            if(targetCharacter !== player1){
+                ctx.drawImage(player1IdleSpritesheet, framePlayer1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength * 3, gridLength * 2.5, gridLength, gridLength)
+            }
+        }
+        if(attackingCharacter !== enemy1){
+            if(targetCharacter !== enemy1){
+                ctx.drawImage(enemy1IdleSpritesheet, frameEnemy1 * spriteWidth, 0, spriteWidth, spriteHeight, gridLength, gridLength * 2.5, gridLength, gridLength)
+            }
+        }
         requestAnimationFrame(targetCharacterHit)
     } else {
         damageCalculation()
